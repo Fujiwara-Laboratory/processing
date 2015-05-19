@@ -28,4 +28,3 @@ void draw(){
   image(gImg, 0, srcImg.height);
   image(bImg, srcImg.width, srcImg.height);
 }
-
