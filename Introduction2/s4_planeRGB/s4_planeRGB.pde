@@ -5,7 +5,7 @@ void setup(){
   color c;
   
   // 画像の読み込みと出力用メモリの準備
-  srcImg = loadImage("../../../../IMG/BostonCityFlow.jpg");
+  srcImg = loadImage("画像のファイルパス");
   size(srcImg.width * 2, srcImg.height * 2);
   rImg = new PImage(srcImg.width, srcImg.height);
   gImg = new PImage(srcImg.width, srcImg.height);
