@@ -2,7 +2,7 @@ PImage srcImg;
 
 void setup(){
   // 画像の読み込みとウィンドウの準備
-  srcImg = loadImage("../../../../IMG/BostonCityFlow.jpg");
+  srcImg = loadImage("画像のファイルパス");
   size(srcImg.width, srcImg.height);
 }
 
