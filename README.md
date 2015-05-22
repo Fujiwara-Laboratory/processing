@@ -1,7 +1,7 @@
 Processing
 ---
 #### [画像ファイル](https://github.com/Fujiwara-Laboratory/processing/tree/master/Image)
-手元に無い場合は利用してください。
+適当な画像が手元に無い場合は利用してください。
 
 #### 入門講座(プログラミング)
 1. 第一回：[Introduction1](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction1)  
