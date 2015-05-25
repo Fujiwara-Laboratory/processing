@@ -9,3 +9,5 @@ Processing
 とりあえず動かしてみる。
 * 第二回：[Introduction2](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction2)  
 画像を開いて表示してみる。
+* 第三回：[Introduction3](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction3)  
+画像処理っぽいことをしてみる。
