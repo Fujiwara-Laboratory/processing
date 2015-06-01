@@ -11,3 +11,5 @@ Processing
 画像を開いて表示してみる。
 * 第三回：[Introduction3](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction3)  
 画像処理っぽいことをしてみる。
+* 第四回：[Introduction4](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction4)  
+ライブラリを使ってみる。
