@@ -1,5 +1,4 @@
 PImage srcImg, rImg, gImg, bImg;
-boolean flagDispOrignal = true;
 
 void setup(){
   color c;

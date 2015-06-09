@@ -12,7 +12,7 @@ void setup(){
   cvImg = new OpenCV(this, srcPImg);
   
   // cannyエッジの抽出
-  cvImg.findCannyEdges(20,75);
+  cvImg.findCannyEdges(20, 75);
   
   // 処理結果をProcessing用メモリへコピー
   dstPImg = cvImg.getSnapshot();
