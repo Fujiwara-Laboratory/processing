@@ -5,7 +5,7 @@ Capture cam;
 int w = 640, h = 480;
 
 // 画像の時間平均用の変数
-int sampleFrames = 30;
+int sampleFrames = 100;
 PImage srcImg = null, aveImg = null;
 int bufImages[][] = new int[sampleFrames][], buf[] = new int[w * h];
 int count = 0;
