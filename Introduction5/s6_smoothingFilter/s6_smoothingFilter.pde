@@ -20,6 +20,10 @@ void setup(){
 }
 
 void draw(){
+<<<<<<< HEAD
+=======
+  int i, j, m, n, r, g, b, x, y, k = kSize / 2, area;
+>>>>>>> origin/master
   // カメラが取り込める状態(動いている場合)はメモリに
   if(cam.available()) cam.read();
   
