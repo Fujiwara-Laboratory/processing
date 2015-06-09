@@ -1,1 +1,2 @@
-*.properties
+sketch.properties
+.DS_Store
