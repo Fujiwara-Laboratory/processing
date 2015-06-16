@@ -15,3 +15,5 @@ Processing
 ライブラリを使ってみる。
 * 第五回：[Introduction5](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction5)  
 カメラを使ってみる。
+* 第六回：[Introduction6](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction6)  
+カメラ＋OpenCV。
