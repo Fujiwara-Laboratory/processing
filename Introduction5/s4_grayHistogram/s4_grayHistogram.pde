@@ -70,8 +70,8 @@ void genHistogram(PImage gray, PGraphics hist, int hScale){
   hist.background(255);
 
   // 折れ線グラフの描画
-  stroke(0);
-  strokeWeight(hScale);
+  hist.stroke(0);
+  hist.strokeWeight(hScale);
   // 一番左の点
   px = 0;
   py = hist.height - (hist.height * histAry[0]) / maxValue  - 1;
