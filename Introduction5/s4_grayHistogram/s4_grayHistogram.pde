@@ -9,8 +9,6 @@ PGraphics histImg = null;
 int histScale = 2; // ヒストグラムのグラフを表示する際の倍率
 
 void setup(){
-  // サイズを決めて初期化
-  size(w, h);
   cam = new Capture(this, w, h, 30);
   
   // 取り込み開始
