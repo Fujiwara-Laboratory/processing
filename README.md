@@ -19,3 +19,5 @@ Processing
 カメラ＋OpenCV。
 * 第七回：[Introduction7](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction7)  
 Kinectの簡単なプログラム例。
+* 第八回：[Introduction8](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction8)  
+Kinectの簡単な応用例。
