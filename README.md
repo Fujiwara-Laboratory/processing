@@ -17,3 +17,5 @@ Processing
 カメラを使ってみる。
 * 第六回：[Introduction6](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction6)  
 カメラ＋OpenCV。
+* 第七回：[Introduction7](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction7)  
+Kinectの簡単なプログラム例。
