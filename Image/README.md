@@ -1,6 +1,6 @@
 画像ファイル
 ---
-フリー素材の[DEV☆SAN](http://study-abroad.misao.in/india-2/indianlife/freeindian/)と[MIKA☆RIKA](mika-rika-free.jp)です。  
+フリー素材の[DEV☆SAN](http://study-abroad.misao.in/india-2/indianlife/freeindian/)と[MIKA☆RIKA](http://mika-rika-free.jp/)です。  
 800x533(オリジナルサイズ)と480x320(やや小さくしたもの)があります。  
 その他、ゼミ内の解説で用いた画像も置いてあります。
 

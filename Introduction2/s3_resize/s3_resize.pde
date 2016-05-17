@@ -1,11 +1,15 @@
 PImage srcImg, smallImg;
 
-void setup(){
-  // 画像の読み込みと出力用メモリの準備
+void settings(){
+  // 画像の読み込みとウィンドウの準備
   srcImg = loadImage("画像のファイルパス");
   size(srcImg.width + srcImg.width / 2, srcImg.height);
+}
+
+void setup(){
+  // 出力用メモリの準備
+  //smallImg = srcImg;
   smallImg = srcImg.get();
-//  smallImg = srcImg;
   smallImg.resize(srcImg.width / 2, srcImg.height / 2);
 }
 

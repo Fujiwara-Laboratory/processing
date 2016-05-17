@@ -1,6 +1,6 @@
 PImage srcImg;
 
-void setup(){
+void settings(){
   // 画像の読み込みとウィンドウの準備
   srcImg = loadImage("画像のファイルパス");
   size(srcImg.width, srcImg.height);

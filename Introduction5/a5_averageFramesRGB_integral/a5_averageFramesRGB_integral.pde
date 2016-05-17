@@ -5,13 +5,18 @@ Capture cam;
 int w = 640, h = 480;
 
 // 画像の時間平均用の変数
-int sampleFrames = 300;
+int sampleFrames = 30;
 PImage srcImg = null, aveImg = null;
-int bufImagesR[][] = new int[sampleFrames][];
-int bufImagesG[][] = new int[sampleFrames][];
-int bufImagesB[][] = new int[sampleFrames][];
+int bufImagesR[][] = new int[sampleFrames][w * h];
+int bufImagesG[][] = new int[sampleFrames][w * h];
+int bufImagesB[][] = new int[sampleFrames][w * h];
 int bufR[] = new int[w * h], bufG[] = new int[w * h], bufB[] = new int[w * h];
 int count = 0;
+
+void settings(){
+  // 画像の配置を考慮したウィンドウサイズ
+  size(w * 2, h);
+}
 
 void setup(){
   // サイズを決めて初期化
@@ -22,19 +27,12 @@ void setup(){
   
   // 出力用メモリの準備
   aveImg = new PImage(w, h);
-  for(int i = 0; i < sampleFrames; i++){
-    bufImagesR[i] = new int[w * h];
-    bufImagesG[i] = new int[w * h];
-    bufImagesB[i] = new int[w * h];
-  }
-  for(int i = 0; i < w * h; i++) bufR[i] =  bufG[i] =  bufB[i] = 0;
   
-  // 画像の配置を考慮したウィンドウサイズ
-  size(w * 2, h);
+  for(int i = 0; i < w * h; i++) bufR[i] =  bufG[i] =  bufB[i] = 0;
 }
 
 void draw(){
-  int i, j, n, selFrame = count % sampleFrames;
+  int i, j, selFrame = count % sampleFrames;
   // カメラが取り込める状態(動いている場合)はメモリに
   if(cam.available()) cam.read();
   
@@ -65,9 +63,9 @@ void draw(){
   
   for(j = 0; j < h; j++){
     for(i = 0; i < w; i++){
-      bufR[i + j * w ] += bufImagesR[selFrame][i + j * w];
-      bufG[i + j * w ] += bufImagesG[selFrame][i + j * w];
-      bufB[i + j * w ] += bufImagesB[selFrame][i + j * w];
+      bufR[i + j * w] += bufImagesR[selFrame][i + j * w];
+      bufG[i + j * w] += bufImagesG[selFrame][i + j * w];
+      bufB[i + j * w] += bufImagesB[selFrame][i + j * w];
     }
   }
   

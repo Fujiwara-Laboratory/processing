@@ -2,15 +2,18 @@
 import processing.video.*;
 // カメラ用の変数
 Capture cam;
-int w = 640, h = 480;
+int w = 640, h = 480, hist_w = 256, hist_h = 120;
 
 PImage srcImg = null, dstImg = null;
-PGraphics histImg = null;
+PGraphics histImg;
 int histScale = 2; // ヒストグラムのグラフを表示する際の倍率
 
+void settings(){
+  // 画像の配置を考慮したウィンドウサイズ
+  size(w + hist_w * histScale, h);
+}
+
 void setup(){
-  // サイズを決めて初期化
-  size(w, h);
   cam = new Capture(this, w, h, 30);
   
   // 取り込み開始
@@ -19,10 +22,7 @@ void setup(){
   // 画像の読み込みと出力用メモリの準備
   dstImg = new PImage(w, h);
   // ヒストグラム用の画像(描画関数を使うためPGraphics)用のメモリ
-  histImg = createGraphics(256 * histScale, 180 * histScale);
-  
-  // 画像の配置を考慮したウィンドウサイズ
-  size(w + histImg.width, h * 2);
+  histImg = createGraphics(hist_w * histScale, hist_h * histScale);
 }
 
 void draw(){

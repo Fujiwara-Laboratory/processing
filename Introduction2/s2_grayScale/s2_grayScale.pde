@@ -1,13 +1,17 @@
 PImage srcImg, dstImg;
 boolean flagDispOrignal = true;
 
+void settings(){
+  // 画像の読み込みとウィンドウの準備
+  srcImg = loadImage("画像のファイルパス");
+  size(srcImg.width, srcImg.height);
+}
+
 void setup(){
   color c;
   float r, g, b, f;
   
-  // 画像の読み込みと出力用メモリの準備
-  srcImg = loadImage("画像のファイルパス");
-  size(srcImg.width, srcImg.height);
+  // 出力用メモリの準備
   dstImg = new PImage(srcImg.width, srcImg.height);
   
   // 画像のグレースケール化
@@ -18,7 +22,7 @@ void setup(){
       g = green(c);
       b = blue(c);
       f = (0.298912 * r + 0.586611 * g + 0.114478 * b);
-      dstImg.set(i, j, color(f));
+      dstImg.set(i, j, color(f)); // 位置を指定してその画素へ書き込む
     }
   }
 }
