@@ -7,8 +7,8 @@ void setup(){
   float r1, g1, b1, r2, g2, b2;
   
   // 画像の読み込みと出力用メモリの準備
-  srcImg = loadImage("../../Image/redMouse.bmp");
-  size(srcImg.width, srcImg.height);
+  srcImg = loadImage("画像のファイルパス");
+  surface.setSize(srcImg.width, srcImg.height);
   
   // マウス(検出したい対象)の色定義矩形の初期位置
   x1 = width;

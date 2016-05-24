@@ -1,10 +1,10 @@
 PImage srcImg;
-float r1, g1, b1, r2, g2, b2;
+int r1, g1, b1, r2, g2, b2;
 int typeFlag;
 
 void setup(){
-  srcImg = loadImage("../../Image/redMouse.bmp");
-  size(srcImg.width, srcImg.height);
+  srcImg = loadImage("画像のファイルパス");
+  surface.setSize(srcImg.width, srcImg.height);
 }
 
 void draw(){
@@ -13,7 +13,7 @@ void draw(){
 
 void mousePressed(){
   color c;
-  float r, g, b;
+  int r, g, b;
   c = srcImg.pixels[mouseX + mouseY * width ];
   r = (c >> 16) & 0xFF;
   g = (c >> 8) & 0xFF;
