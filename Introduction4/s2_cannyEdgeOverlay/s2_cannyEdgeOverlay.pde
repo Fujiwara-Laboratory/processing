@@ -7,8 +7,8 @@ OpenCV cvImg;
 
 void setup(){
   // 画像の読み込みと処理用メモリ(OpenCV)の準備
-  srcPImg = loadImage("../../Image/redMouse.bmp");
-  size(srcPImg.width, srcPImg.height);
+  srcPImg = loadImage("画像のファイルパス");
+  surface.setSize(srcPImg.width, srcPImg.height);
   cvImg = new OpenCV(this, srcPImg);
   
   // cannyエッジの抽出

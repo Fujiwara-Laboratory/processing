@@ -11,8 +11,8 @@ Rectangle[] faces;
 
 void setup(){
   // 画像の読み込みと処理用メモリ(OpenCV)の準備
-  srcPImg = loadImage("../../Image/faces.jpg");
-  size(srcPImg.width, srcPImg.height);
+  srcPImg = loadImage("画像のファイルパス");
+  surface.setSize(srcPImg.width, srcPImg.height);
   cvImg = new OpenCV(this, srcPImg);
 
   // 顔検出
@@ -33,7 +33,7 @@ void draw(){
     rect(faces[i].x, faces[i].y, faces[i].width, faces[i].height);
     
     // 矩形の領域を画像として保存
-    facePImg = get(faces[i].x, faces[i].y, faces[i].width, faces[i].height);
+    facePImg = srcPImg.get(faces[i].x, faces[i].y, faces[i].width, faces[i].height);
     image(facePImg, wPos, 0);
     wPos += facePImg.width;
   }
