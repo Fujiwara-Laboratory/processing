@@ -17,7 +17,7 @@ void setup(){
   dstImg = new PImage(w, h);
   
   // 画像の配置を考慮したウィンドウサイズ
-  size(w * 2, h);
+  surface.setSize(w * 2, h);
 }
 
 void draw(){
@@ -63,4 +63,3 @@ void draw(){
   dstImg.updatePixels();
   image(dstImg, w, 0);
 }
-

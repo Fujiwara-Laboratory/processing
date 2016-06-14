@@ -6,7 +6,7 @@ int w = 640, h = 480;
 
 void setup(){
   // ウィンドウサイズと取り込みサイズを決めて初期化
-  size(w, h);
+  surface.setSize(w, h);
   cam = new Capture(this, w, h, 30);
   
   // 取り込み開始

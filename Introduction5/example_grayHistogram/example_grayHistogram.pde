@@ -1,16 +1,16 @@
-PImage srcImg = null, dstImg = null;
+PImage srcImg, dstImg;
 PGraphics histImg = null;
 int histScale = 2; // ヒストグラムのグラフを表示する祭の倍率
 
 void setup(){
   // 画像の読み込みと出力用メモリの準備
-  srcImg = loadImage("../../../IMG/BostonCityFlow.jpg");
+  srcImg = loadImage("../../../../IMG/BostonCityFlow.jpg");
   // グレースケール画像(実は表示しなくてもよい)用のメモリ
   dstImg = new PImage(srcImg.width, srcImg.height);
-  // 画像サイズに応じたウィンドウサイズの決定
-  size(srcImg.width + histImg.width, srcImg.height * 2);
   // ヒストグラム用の画像(描画関数を使うためPGraphics)用のメモリ
   histImg = createGraphics(256 * histScale, 180 * histScale);
+  // 画像サイズに応じたウィンドウサイズの決定
+  surface.setSize(srcImg.width + histImg.width, srcImg.height * 2);
   // 画像をグレースケールに
   PRGB2gray(srcImg, dstImg);
   // ヒストグラムを算出してグラフを画像化
@@ -48,12 +48,6 @@ void genHistogram(PImage gray, PGraphics hist, int hScale){
   // グラフ描画の開始
   hist.beginDraw();
   hist.background(255);
-//  pixelsへアクセスする場合はloadPixels、updatePixelsを前後に加えること
-//  hist.loadPixels();
-//  for(j = 0; j < hist.height; j++)
-//    for(i = 0; i < hist.width; i++)
-//      hist.pixels[i + j * hist.width] = color(255);
-//  hist.updatePixels();
 
   // 折れ線グラフの描画
   stroke(0);

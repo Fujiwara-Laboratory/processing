@@ -19,15 +19,14 @@ void setup() {
   cam = new Capture(this, cameras[0]);
   
   // カメラの名前で指定する場合
-//  cam = new Capture(this, 横幅, 縦幅, "カメラ名", フレームレート);
+  //cam = new Capture(this, 横幅, 縦幅, "カメラ名", フレームレート);
   
   cam.start();
 }
 
 void draw() {
   if(cam.available() == true) cam.read();
-  // 横に伸びている場合は、対応する4:3等へ変更する (yを同じにする等の工夫も大事)
+  // 縦や横に伸びて見える場合は、対応する4:3等へ変更する
   // 以下のように表示だけであれば狭めるのみでも可 (変更しない場合は4、5引数が必要ない)
   image(cam, 0, 0);
 }
-

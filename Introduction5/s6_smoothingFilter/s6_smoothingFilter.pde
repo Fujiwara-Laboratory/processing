@@ -14,7 +14,7 @@ void setup(){
   cam.start();
   
   // 画像の配置を考慮したウィンドウサイズ
-  size(w * 2, h);
+  surface.setSize(w * 2, h);
 }
 
 void draw(){
@@ -35,4 +35,3 @@ void draw(){
   // 平滑化画像
   image(dstImg, w, 0);
 }
-
