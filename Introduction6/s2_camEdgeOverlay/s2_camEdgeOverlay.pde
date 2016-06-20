@@ -16,11 +16,14 @@ color edgeCol = color(255, 255, 255);
 
 void setup(){
   // ウィンドウサイズと取り込みサイズを決めて初期化
-  size(w, h);
+  surface.setSize(w, h);
   cam = new Capture(this, w, h, 30);
   
   // 取り込み開始
   cam.start();
+  
+  // OpenCV形式の画像メモリを取得
+  cvImg = new OpenCV(this, cam);
 }
 
 void draw(){
@@ -30,7 +33,7 @@ void draw(){
   image(cam, 0, 0);
   
   // 取り込んだ画像をOpenCV形式へ
-  cvImg = new OpenCV(this, cam);
+  cvImg.loadImage(cam);
   
   // cannyエッジの抽出
   cvImg.findCannyEdges(70, 120);

@@ -16,15 +16,21 @@ PImage faceImg;
 // 顔検出結果の座標
 Rectangle[] faces;
 
-int faceCount = 0;
-
 void setup(){
   // ウィンドウサイズと取り込みサイズを決めて初期化
-  size(w, h);
+  surface.setSize(w, h);
   cam = new Capture(this, w, h, 30); // VGAだと処理落ちがひどい
   
   // 取り込み開始
   cam.start();
+  
+  // OpenCV形式の画像メモリを取得
+  cvImg = new OpenCV(this, cam);
+  
+  //顔検出器の読み込み
+  cvImg.loadCascade(OpenCV.CASCADE_FRONTALFACE); 
+  
+  // 各種設定の初期化
   noFill();
   stroke(0, 255, 0);
   strokeWeight(3);
@@ -38,10 +44,9 @@ void draw(){
   image(cam, 0, 0);
   
   // 取り込んだ画像をOpenCV形式へ
-  cvImg = new OpenCV(this, cam);
+  cvImg.loadImage(cam);
   
   // 顔検出
-  cvImg.loadCascade(OpenCV.CASCADE_FRONTALFACE);  
   faces = cvImg.detect();
   
   // 検出した顔位置へ矩形を表示する
