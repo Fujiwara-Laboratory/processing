@@ -19,7 +19,7 @@ void setup() {
 void draw() {
   int i, j;
   // 最初のフレームを背景画像として保存しておく
-  if(frameCount == 3) bgImg = kinect.GetImage();
+  if(frameCount > 2) bgImg = kinect.GetImage();
   if(bgImg == null) return;
   image(kinect.GetImage(), 0, 0);
   
