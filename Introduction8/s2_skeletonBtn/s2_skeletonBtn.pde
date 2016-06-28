@@ -79,7 +79,7 @@ void draw(){
 }
 
 void appearEvent(SkeletonData _s){
-  if (_s.trackingState == Kinect.NUI_SKELETON_NOT_TRACKED){
+  if(_s.trackingState == Kinect.NUI_SKELETON_NOT_TRACKED){
     return;
   }
   synchronized(bodies){
