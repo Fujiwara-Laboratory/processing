@@ -1,23 +1,17 @@
 // kinect用ライブラリ
-import SimpleOpenNI.*;
+import kinect4WinSDK.*;
 
-// RGBDカメラ用変数
-SimpleOpenNI kinect;
+// RGBDカメラ用
+Kinect kinect;
 
 void setup(){
   size(640, 480);
   
   // RGBDカメラの起動
-  kinect = new SimpleOpenNI(this);
-  
-  // 距離計測を有効にする
-  kinect.enableDepth();
+  kinect = new Kinect(this);
 }
 
 void draw(){
-  // RGBDカメラの更新
-  kinect.update();
-  
-  // 距離画像の表示
-  image(kinect.depthImage(), 0, 0);
+  // カラー画像の表示
+  image(kinect.GetDepth(), 0, 0);
 }

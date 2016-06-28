@@ -1,64 +1,151 @@
 // kinect用ライブラリ
-import SimpleOpenNI.*;
+import kinect4WinSDK.*;
 
 // RGBDカメラ用変数
-SimpleOpenNI kinect;
+Kinect kinect;
+ArrayList <SkeletonData> bodies;
 
 void setup(){
   size(640, 480);
   
   // RGBDカメラ関係の初期化
-  kinect = new SimpleOpenNI(this);
-  kinect.enableDepth();
-  kinect.enableRGB();
-  kinect.setMirror(true); // 鏡写し(falseで無効)
-  kinect.alternativeViewPointDepthToImage(); // 位置の微調整
-  kinect.enableUser(); // 姿勢推定を有効にする
+  kinect = new Kinect(this);
+  
+  bodies = new ArrayList<SkeletonData>();
   
   strokeWeight(5);
 }
 
 void draw(){
-  kinect.update();
-
-  // カラー画像の表示
-  image(kinect.rgbImage(), 0, 0);
+  int i;
+  background(0);
   
   // 検出したユーザ毎に処理
-  int[] userList = kinect.getUsers();
-  for(int i = 0; i < userList.length; i++){
-    if(kinect.isTrackingSkeleton(userList[i])){
-      drawSkeleton(userList[i]);
-    }
+  for (i = 0; i < bodies.size (); i++){
+    drawSkeleton(bodies.get(i));
   }
 }
 
 // スケルトン表示の処理
-void drawSkeleton(int userId){
-  stroke(255, 0, 0);
-  kinect.drawLimb(userId, SimpleOpenNI.SKEL_HEAD, SimpleOpenNI.SKEL_NECK);
+void drawSkeleton(SkeletonData _s){
+  // Body
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_HEAD, 
+  Kinect.NUI_SKELETON_POSITION_SHOULDER_CENTER);
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_SHOULDER_CENTER, 
+  Kinect.NUI_SKELETON_POSITION_SHOULDER_LEFT);
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_SHOULDER_CENTER, 
+  Kinect.NUI_SKELETON_POSITION_SHOULDER_RIGHT);
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_SHOULDER_CENTER, 
+  Kinect.NUI_SKELETON_POSITION_SPINE);
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_SHOULDER_LEFT, 
+  Kinect.NUI_SKELETON_POSITION_SPINE);
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_SHOULDER_RIGHT, 
+  Kinect.NUI_SKELETON_POSITION_SPINE);
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_SPINE, 
+  Kinect.NUI_SKELETON_POSITION_HIP_CENTER);
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_HIP_CENTER, 
+  Kinect.NUI_SKELETON_POSITION_HIP_LEFT);
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_HIP_CENTER, 
+  Kinect.NUI_SKELETON_POSITION_HIP_RIGHT);
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_HIP_LEFT, 
+  Kinect.NUI_SKELETON_POSITION_HIP_RIGHT);
 
-  kinect.drawLimb(userId, SimpleOpenNI.SKEL_TORSO, SimpleOpenNI.SKEL_LEFT_HIP);
-  kinect.drawLimb(userId, SimpleOpenNI.SKEL_LEFT_HIP, SimpleOpenNI.SKEL_LEFT_KNEE);
-  kinect.drawLimb(userId, SimpleOpenNI.SKEL_LEFT_KNEE, SimpleOpenNI.SKEL_LEFT_FOOT);
+  // Left Arm
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_SHOULDER_LEFT, 
+  Kinect.NUI_SKELETON_POSITION_ELBOW_LEFT);
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_ELBOW_LEFT, 
+  Kinect.NUI_SKELETON_POSITION_WRIST_LEFT);
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_WRIST_LEFT, 
+  Kinect.NUI_SKELETON_POSITION_HAND_LEFT);
 
-  kinect.drawLimb(userId, SimpleOpenNI.SKEL_TORSO, SimpleOpenNI.SKEL_RIGHT_HIP);
-  kinect.drawLimb(userId, SimpleOpenNI.SKEL_RIGHT_HIP, SimpleOpenNI.SKEL_RIGHT_KNEE);
-  kinect.drawLimb(userId, SimpleOpenNI.SKEL_RIGHT_KNEE, SimpleOpenNI.SKEL_RIGHT_FOOT);
+  // Right Arm
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_SHOULDER_RIGHT, 
+  Kinect.NUI_SKELETON_POSITION_ELBOW_RIGHT);
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_ELBOW_RIGHT, 
+  Kinect.NUI_SKELETON_POSITION_WRIST_RIGHT);
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_WRIST_RIGHT, 
+  Kinect.NUI_SKELETON_POSITION_HAND_RIGHT);
 
-  stroke(0, 0, 255);
-  kinect.drawLimb(userId, SimpleOpenNI.SKEL_NECK, SimpleOpenNI.SKEL_LEFT_SHOULDER);
-  kinect.drawLimb(userId, SimpleOpenNI.SKEL_LEFT_SHOULDER, SimpleOpenNI.SKEL_LEFT_ELBOW);
-  kinect.drawLimb(userId, SimpleOpenNI.SKEL_LEFT_ELBOW, SimpleOpenNI.SKEL_LEFT_HAND);
-  kinect.drawLimb(userId, SimpleOpenNI.SKEL_LEFT_SHOULDER, SimpleOpenNI.SKEL_TORSO);
+  // Left Leg
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_HIP_LEFT, 
+  Kinect.NUI_SKELETON_POSITION_KNEE_LEFT);
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_KNEE_LEFT, 
+  Kinect.NUI_SKELETON_POSITION_ANKLE_LEFT);
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_ANKLE_LEFT, 
+  Kinect.NUI_SKELETON_POSITION_FOOT_LEFT);
 
-  stroke(0, 255, 0);
-  kinect.drawLimb(userId, SimpleOpenNI.SKEL_NECK, SimpleOpenNI.SKEL_RIGHT_SHOULDER);
-  kinect.drawLimb(userId, SimpleOpenNI.SKEL_RIGHT_SHOULDER, SimpleOpenNI.SKEL_RIGHT_ELBOW);
-  kinect.drawLimb(userId, SimpleOpenNI.SKEL_RIGHT_ELBOW, SimpleOpenNI.SKEL_RIGHT_HAND);
-  kinect.drawLimb(userId, SimpleOpenNI.SKEL_RIGHT_SHOULDER, SimpleOpenNI.SKEL_TORSO);
+  // Right Leg
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_HIP_RIGHT, 
+  Kinect.NUI_SKELETON_POSITION_KNEE_RIGHT);
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_KNEE_RIGHT, 
+  Kinect.NUI_SKELETON_POSITION_ANKLE_RIGHT);
+  DrawBone(_s, 
+  Kinect.NUI_SKELETON_POSITION_ANKLE_RIGHT, 
+  Kinect.NUI_SKELETON_POSITION_FOOT_RIGHT);
 }
 
-void onNewUser(SimpleOpenNI curkinect, int userId){
-  curkinect.startTrackingSkeleton(userId);
+void DrawBone(SkeletonData _s, int _j1, int _j2){
+  noFill();
+  stroke(255, 255, 0);
+  if(_s.skeletonPositionTrackingState[_j1] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED &&
+    _s.skeletonPositionTrackingState[_j2] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED){
+    line(_s.skeletonPositions[_j1].x * width, 
+    _s.skeletonPositions[_j1].y * height, 
+    _s.skeletonPositions[_j2].x * width, 
+    _s.skeletonPositions[_j2].y * height);
+  }
+}
+
+void appearEvent(SkeletonData _s){
+  if (_s.trackingState == Kinect.NUI_SKELETON_NOT_TRACKED){
+    return;
+  }
+  synchronized(bodies){
+    bodies.add(_s);
+  }
+}
+
+void disappearEvent(SkeletonData _s){
+  synchronized(bodies){
+    for(int i = bodies.size() - 1; i >= 0; i--){
+      if(_s.dwTrackingID == bodies.get(i).dwTrackingID){
+        bodies.remove(i);
+      }
+    }
+  }
+}
+
+void moveEvent(SkeletonData _b, SkeletonData _a){
+  if(_a.trackingState == Kinect.NUI_SKELETON_NOT_TRACKED){
+    return;
+  }
+  synchronized(bodies){
+    for(int i=bodies.size() - 1; i >= 0; i--){
+      if(_b.dwTrackingID == bodies.get(i).dwTrackingID){
+        bodies.get(i).copy(_a);
+        break;
+      }
+    }
+  }
 }

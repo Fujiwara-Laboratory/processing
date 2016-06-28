@@ -1,35 +1,36 @@
 // kinect用ライブラリ
-import SimpleOpenNI.*;
+import kinect4WinSDK.*;
 
-// RGBDカメラ用変数
-SimpleOpenNI kinect;
- 
-void setup() {
+// RGBDカメラ用
+Kinect kinect;
+
+// 処理用の画像
+PImage img;
+float scale = 8192.0 / 256;
+
+void setup(){
   size(640, 480);
   
   // RGBDカメラの起動
-  kinect = new SimpleOpenNI(this);
-  
-  // 距離計測を有効にする
-  kinect.enableDepth();
+  kinect = new Kinect(this);
   
   textSize(50); // 文字サイズの設定
   fill(255, 0, 0);
 }
- 
-void draw() {
-  // RGBDカメラの更新
-  kinect.update();
+
+void draw(){
+  int x, y, distRaw, distance = -1;
+  img = kinect.GetDepth();
   
-  // 距離画像の表示
-  image(kinect.depthImage(), 0, 0);
-   
-  // 中心の距離を表示
-  int[] depthMap = kinect.depthMap();
-  int x = width / 2; // 画像中心
-  int y = height / 2; // 画像中心
-  int index = x + y * width;
-  int distance = depthMap[index];
+  // カラー画像の表示
+  image(img, 0, 0);
+  
+  // カラー画像の表示
+  image(img, 0, 0);
+  x = 640 / 2;
+  y = 480 / 2;
+  distRaw = img.pixels[x + y * width] & 0xFF;
+  if(distRaw > 0) distance = (int)((255 - distRaw) * scale);
   
   // 中心座標のガイド(円)と距離の表示
   ellipse(x, y, 10, 10);

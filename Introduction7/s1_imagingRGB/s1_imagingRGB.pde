@@ -1,23 +1,17 @@
 // kinect用ライブラリ
-import SimpleOpenNI.*;
+import kinect4WinSDK.*;
 
 // RGBDカメラ用
-SimpleOpenNI kinect;
+Kinect kinect;
 
 void setup(){
   size(640, 480);
   
   // RGBDカメラの起動
-  kinect = new SimpleOpenNI(this);
-  
-  // カラー画像取得を有効にする
-  kinect.enableRGB();
+  kinect = new Kinect(this);
 }
 
 void draw(){
-  // RGBDカメラの更新
-  kinect.update();
-  
   // カラー画像の表示
-  image(kinect.rgbImage(), 0, 0);
+  image(kinect.GetImage(), 0, 0);
 }
