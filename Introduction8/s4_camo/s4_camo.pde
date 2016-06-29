@@ -21,6 +21,8 @@ void draw() {
   // 最初のフレームを背景画像として保存しておく
   if(frameCount > 2) bgImg = kinect.GetImage();
   if(bgImg == null) return;
+  
+  // カラー画像の表示
   image(kinect.GetImage(), 0, 0);
   
   if(bodies.size () > 0){ // ユーザの認識ができている場合

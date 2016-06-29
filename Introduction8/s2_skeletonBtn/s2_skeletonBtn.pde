@@ -29,6 +29,8 @@ void setup(){
 void draw(){
   int i;
   float rx, ry, lx, ly;
+  
+  // カラー画像の表示
   image(kinect.GetImage(), 0, 0);
   
   // フラグを毎フレーム初期化(このタイミングでしないとスケルトンロスト等の対処が複雑になる)

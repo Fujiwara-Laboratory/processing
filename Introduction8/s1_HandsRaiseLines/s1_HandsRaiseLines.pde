@@ -33,6 +33,7 @@ void draw(){
   PVector pl = new PVector();
   PVector pcl = new PVector();
   
+  // カラー画像の表示
   image(kinect.GetImage(),0,0);
   
   for(i = 0; i < maxHandsNUM; i++){

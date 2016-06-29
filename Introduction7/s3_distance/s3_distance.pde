@@ -22,7 +22,7 @@ void draw(){
   int x, y, distRaw, distance = -1;
   img = kinect.GetDepth();
   
-  // カラー画像の表示
+  // 距離画像の表示
   image(img, 0, 0);
   
   // カラー画像の表示

@@ -30,6 +30,8 @@ void setup(){
 
 void draw(){
   int i, j, d, cV = 0;
+  
+  // カラー画像
   image(kinect.GetImage(), 0, 0);
   
   // 距離値の分布をPImageにコピー
