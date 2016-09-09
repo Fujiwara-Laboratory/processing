@@ -1,36 +1,38 @@
+// kinect V2用のライブラリ
 import KinectPV2.KJoint;
 import KinectPV2.*;
 
 KinectPV2 kinect;
 
-float skScale = 0.5;
-int f_hr = 0, f_hl = 0;
+float skScale = 0.5; // 画面表示のスケール変数
+float hrx, hry, hlx, hly; // 両手のXY座標 (PVector等の方が本当はよい)
+int f_hr = 0, f_hl = 0; // 両手の状態フラグ
 
 void settings(){
+  // スケールに応じたウィンドウサイズ
   size((int)(1920 * skScale), (int)(1080 * skScale));
 }
 
-void setup() {
-
+void setup(){
+  // kinect関連の初期化
   kinect = new KinectPV2(this);
-
   kinect.enableSkeletonColorMap(true);
   kinect.enableColorImg(true);
-
   kinect.init();
+  
+  // 描画の各種設定
   strokeWeight(5);
   noFill();
 }
 
-void draw() {
-  background(0);
-  float hrx, hry, hlx, hly;
-
-  image(kinect.getColorImage(), 0, 0, width, height);
-
+void draw(){
+  // カラー画像用にスケルトンを生成する
   ArrayList<KSkeleton> skeletonArray =  kinect.getSkeletonColorMap();
-
-  // 一人用のプログラム
+  
+  // 背景をカラー画像に
+  image(kinect.getColorImage(), 0, 0, width, height);
+  
+  // 一人用のプログラム (個別に対応させるにはクラス化したほうがよい)
   for(int i = 0; i < skeletonArray.size(); i++){
     KSkeleton skeleton = (KSkeleton) skeletonArray.get(i);
     if(skeleton.isTracked()){
@@ -80,5 +82,4 @@ void draw() {
       ellipse(hlx, hly, 70, 70);
     }
   }
-
 }
