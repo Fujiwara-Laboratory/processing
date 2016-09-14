@@ -22,8 +22,8 @@ void draw(){
   
   // 中心位置と任意の座標から距離と角度(右を0度で時計回り)を計算
   betD = dist(cx, cy, px, py);
-  th = -atan2(cx - px, cy - py) + PI * 1.5;
-  if(th > 2 * PI) th -= 2 * PI;
+  th = atan2(py - cy, px - cx);
+  if(th < 0) th += 2 * PI; // そのままではマイナスゾーンがあるので0 - 360にする
   betA = degrees(th);
   
   fill(0);
