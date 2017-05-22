@@ -28,6 +28,8 @@ void setup(){
 void draw(){
   image(srcImg, 0, 0); // 入力画像
   
+  image(sblImg, srcImg.width, 0); // グレースケール画像
+  
   image(sblImg, srcImg.width, 0); // ソーベルフィルタ
 }
 
