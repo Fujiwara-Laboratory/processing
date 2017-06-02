@@ -4,8 +4,7 @@ int histScale = 2; // ヒストグラムのグラフを表示する祭の倍率
 
 void setup(){
   // 画像の読み込みと出力用メモリの準備
-  srcImg = loadImage("../../../../IMG/BostonCityFlow.jpg");
-  // グレースケール画像(実は表示しなくてもよい)用のメモリ
+  srcImg = loadImage("画像のファイルパス");
   dstImg = new PImage(srcImg.width, srcImg.height);
   // ヒストグラム用の画像(描画関数を使うためPGraphics)用のメモリ
   histImg = createGraphics(256 * histScale, 180 * histScale);
@@ -50,8 +49,8 @@ void genHistogram(PImage gray, PGraphics hist, int hScale){
   hist.background(255);
 
   // 折れ線グラフの描画
-  stroke(0);
-  strokeWeight(hScale);
+  hist.stroke(0);
+  hist.strokeWeight(hScale);
   // 一番左の点
   px = 0;
   py = hist.height - (hist.height * histAry[0]) / maxValue  - 1;

@@ -24,9 +24,6 @@ void draw(){
   // 取り込んだフレームをコピー
   srcImg = cam;
   
-  // 取り込んだフレームをコピー
-  srcImg = cam;
-  
   dstImg = srcImg.get(); // dstImg = srcImg;はダメ(順番を変えればなんとかなるが)
   dstImg.filter(BLUR, 6);
   

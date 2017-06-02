@@ -28,9 +28,6 @@ void draw(){
   // 取り込んだフレームをコピー
   srcImg = cam;
   
-  // 取り込んだフレームをコピー
-  srcImg = cam;
-  
   // 入力画像
   image(srcImg, 0, 0);
   
