@@ -1,11 +1,11 @@
 float cx, cy, px, py;
 
-
 void setup(){
-  size(600, 500);
-  textSize(20);
-  cx = 300;
-  cy = 300;
+  size(900, 700);
+  textSize(24);
+  cx = width / 2;
+  cy = height / 2;
+  textFont(createFont("Osaka", 32));
 }
 
 void draw(){
@@ -14,10 +14,13 @@ void draw(){
   px = mouseX;
   py = mouseY;
   
-  noFill();
+  fill(0);
   stroke(0);
-  ellipse(cx, cy, 11, 11);
+  strokeWeight(1);
+  ellipse(cx, cy, 21, 21);
+  noFill();
   stroke(255, 0, 0);
+  strokeWeight(3);
   ellipse(px, py, 11, 11);
   
   // 中心位置と任意の座標から距離と角度(右を0度で時計回り)を計算
@@ -27,6 +30,6 @@ void draw(){
   betA = degrees(th);
   
   fill(0);
-  text(betD, 10, 30);
-  text(betA, 10, 60);
+  text("距離: " + int(betD), 10, 30);
+  text("角度: " + int(betA), 10, 64);
 }

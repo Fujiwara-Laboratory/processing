@@ -5,21 +5,20 @@ import kinect4WinSDK.*;
 Kinect kinect;
 ArrayList <SkeletonData> bodies;
 PImage bgImg = null, mskImg;
-color blk = color(0, 0, 0);
+int w = 640, h = 480;
 
 void setup() {
-  size(640, 480);
+  surface.setSize(w, h);
 
   // RGBDカメラ関係の初期化
   kinect = new Kinect(this);
-  
   bodies = new ArrayList<SkeletonData>();
 }
 
 void draw() {
   int i, j;
   // 最初のフレームを背景画像として保存しておく
-  if(frameCount > 2) bgImg = kinect.GetImage();
+  if(frameCount > 5 && bgImg == null) bgImg = kinect.GetImage();
   if(bgImg == null) return;
   
   // カラー画像の表示
@@ -30,12 +29,12 @@ void draw() {
     // ユーザ毎の塗り情報を取得
     mskImg = kinect.GetMask();
     loadPixels();
-    for(j = 0; j < 480; j++){
-      for(i = 0; i < 640; i++){
-        int alp = (mskImg.pixels[i + j * width] >> 24) & 0xFF;
+    for(j = 0; j < h; j++){
+      for(i = 0; i < w; i++){
+        int alp = (mskImg.pixels[i + j * w] >> 24) & 0xFF;
         if(alp == 255){ // アルファ値が255は人体領域
           // ユーザ領域(人が描画されているところ)を背景画像に置き換え(ウィンドウに直接書き込む)
-          pixels[i + j * width] = bgImg.pixels[i + j * width];
+          pixels[i + j * w] = bgImg.pixels[i + j * w];
         }
       }
     }
@@ -45,9 +44,7 @@ void draw() {
 
 
 void appearEvent(SkeletonData _s){
-  if (_s.trackingState == Kinect.NUI_SKELETON_NOT_TRACKED){
-    return;
-  }
+  if (_s.trackingState == Kinect.NUI_SKELETON_NOT_TRACKED) return;
   synchronized(bodies){
     bodies.add(_s);
   }
@@ -64,9 +61,7 @@ void disappearEvent(SkeletonData _s){
 }
 
 void moveEvent(SkeletonData _b, SkeletonData _a){
-  if(_a.trackingState == Kinect.NUI_SKELETON_NOT_TRACKED){
-    return;
-  }
+  if(_a.trackingState == Kinect.NUI_SKELETON_NOT_TRACKED) return;
   synchronized(bodies){
     for(int i=bodies.size() - 1; i >= 0; i--){
       if(_b.dwTrackingID == bodies.get(i).dwTrackingID){
