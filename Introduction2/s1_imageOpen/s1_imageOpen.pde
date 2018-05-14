@@ -1,9 +1,9 @@
 PImage srcImg;
 
-void settings(){
+void setup(){
   // 画像の読み込みとウィンドウの準備
   srcImg = loadImage("画像のファイルパス");
-  size(srcImg.width, srcImg.height);
+  surface.setSize(srcImg.width, srcImg.height);
 }
 
 void draw(){

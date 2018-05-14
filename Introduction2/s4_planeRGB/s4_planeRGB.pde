@@ -1,12 +1,10 @@
 PImage srcImg, rImg, gImg, bImg;
 
-void settings(){
+void setup(){
   // 画像の読み込みとウィンドウの準備
   srcImg = loadImage("画像のファイルパス");
-  size(srcImg.width * 2, srcImg.height * 2);
-}
-
-void setup(){
+  surface.setSize(srcImg.width + srcImg.width / 2, srcImg.height);
+  
   color c;
   
   // 出力用メモリの準備
@@ -14,7 +12,7 @@ void setup(){
   gImg = new PImage(srcImg.width, srcImg.height);
   bImg = new PImage(srcImg.width, srcImg.height);
   
-  // 画像のグレースケール化
+  // 画像を各プレーンに分けて、そのプレーン毎にグレースケール化
   for(int j = 0; j < srcImg.height; j++){
     for(int i = 0; i < srcImg.width; i++){
       c = srcImg.pixels[i + j * srcImg.width];

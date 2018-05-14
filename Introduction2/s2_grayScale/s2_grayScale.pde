@@ -1,13 +1,11 @@
 PImage srcImg, dstImg;
 boolean flagDispOrignal = true;
 
-void settings(){
+void setup(){
   // 画像の読み込みとウィンドウの準備
   srcImg = loadImage("画像のファイルパス");
-  size(srcImg.width, srcImg.height);
-}
-
-void setup(){
+  surface.setSize(srcImg.width, srcImg.height);
+  
   color c;
   float r, g, b, f;
   

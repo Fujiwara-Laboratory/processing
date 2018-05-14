@@ -1,12 +1,10 @@
 PImage srcImg, smallImg;
 
-void settings(){
+void setup(){
   // 画像の読み込みとウィンドウの準備
   srcImg = loadImage("画像のファイルパス");
-  size(srcImg.width + srcImg.width / 2, srcImg.height);
-}
-
-void setup(){
+  surface.setSize(srcImg.width + srcImg.width / 2, srcImg.height);
+  
   // 出力用メモリの準備
   //smallImg = srcImg;
   smallImg = srcImg.get();
