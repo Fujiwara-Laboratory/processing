@@ -3,7 +3,7 @@ PImage srcImg, rImg, gImg, bImg;
 void setup(){
   // 画像の読み込みとウィンドウの準備
   srcImg = loadImage("画像のファイルパス");
-  surface.setSize(srcImg.width + srcImg.width / 2, srcImg.height);
+  surface.setSize(srcImg.width * 2, srcImg.height * 2);
   
   color c;
   
