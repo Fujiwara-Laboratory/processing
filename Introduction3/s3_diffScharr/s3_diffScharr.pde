@@ -1,4 +1,4 @@
-PImage srcImg, dstImg, sblImg;
+PImage srcImg, grayImg, sblImg;
 
 void setup(){
   color c;
@@ -6,8 +6,8 @@ void setup(){
   
   // 画像の読み込みと出力用メモリの準備
   srcImg = loadImage("画像のファイルパス");
-  surface.setSize(srcImg.width * 2, srcImg.height);
-  dstImg = new PImage(srcImg.width, srcImg.height);
+  surface.setSize(srcImg.width * 2, srcImg.height *2);
+  grayImg = new PImage(srcImg.width, srcImg.height);
   sblImg = new PImage(srcImg.width, srcImg.height);
   
   // 画像の2値化(内部処理なので画像は作らない)と矩形の座標の決定
@@ -18,19 +18,19 @@ void setup(){
       g = green(c);
       b = blue(c);
       f = (0.298912 * r + 0.586611 * g + 0.114478 * b);
-      dstImg.set(i, j, color(f)); // 位置を指定してその画素へ書き込む
+      grayImg.set(i, j, color(f)); // 位置を指定してその画素へ書き込む
     }
   }
   
-  sobelFilterScharr(dstImg, sblImg); // Scharrフィルタ
+  sobelFilterScharr(grayImg, sblImg); // Scharrフィルタ
 }
 
 void draw(){
   image(srcImg, 0, 0); // 入力画像
   
-  image(sblImg, srcImg.width, 0); // グレースケール画像
+  image(grayImg, 0, srcImg.height); // グレースケール画像
   
-  image(sblImg, srcImg.width, 0); // ソーベルフィルタ
+  image(sblImg, srcImg.width, srcImg.height); // ソーベルフィルタ
 }
 
 // 移植性を考慮して関数にしておく
