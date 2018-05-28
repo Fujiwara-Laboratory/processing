@@ -32,7 +32,7 @@ void draw(){
   for(int i = 0; i < faces.length; i++){
     rect(faces[i].x, faces[i].y, faces[i].width, faces[i].height);
     
-    // 矩形の領域を画像として保存
+    // 矩形の領域を別の画像として表示(原画像上に並べて上乗せ)
     facePImg = srcPImg.get(faces[i].x, faces[i].y, faces[i].width, faces[i].height);
     image(facePImg, wPos, 0);
     wPos += facePImg.width;
