@@ -31,16 +31,19 @@ void draw(){
   // 入力画像
   image(srcImg, 0, 0);
   
-  // 各ピクセルをグレースケールにして保存用の配列にコピー
   dstImg.loadPixels();
+  // 各ピクセルを走査
   for(j = 0; j < h; j++){
     for(i = 0; i < w; i++){
       area = 0;
       r = g = b = 0;
+      // 処理対象のピクセルから上下左右 ±k の範囲(局所領域)を走査
       for(n = -k; n <= k; n++){
         for(m = -k; m <= k; m++){
           x = i + m;
           y = j + n;
+          
+          // 画像の範囲内であればr、g、bそれぞれを局所領域で合計
           if(x >= 0 && x < w && y >= 0 && y < h){
             r += srcImg.pixels[x + y * w] >> 16 & 0xFF;
             g += srcImg.pixels[x + y * w] >> 8 & 0xFF;
@@ -49,6 +52,8 @@ void draw(){
           }
         }
       }
+      
+      // 面積で割る(平均値算出)
       if(area > 0){
         r /= area;
         g /= area;
