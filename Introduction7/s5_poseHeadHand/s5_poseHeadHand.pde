@@ -1,91 +1,124 @@
-// kinect用ライブラリ
-import kinect4WinSDK.*;
+// kinect V2用のライブラリ
+import KinectPV2.*;
 
 // RGBDカメラ用変数
-Kinect kinect;
-ArrayList <SkeletonData> bodies;
+KinectPV2 kinect;
+ArrayList<KSkeleton> skeletonArray;
+
+// サイズ変更関連の変数
+PImage rsImg;
+float rsScale = 0.5; // 画面表示のスケール変数
+int w, h; // 変更する画像サイズ
+
+// 個別の部品 (頭、右手、左手)
+PVector hd = new PVector(), hr = new PVector(), hl = new PVector();
+int f_hr = 0, f_hl = 0; // 両手の状態フラグ
 
 void setup(){
-  size(640, 480);
+  // スケールに合わせた画面サイズ
+  w = (int)(1920 * rsScale);
+  h = (int)(1080 * rsScale);
+  surface.setSize(w, h);
+  rsImg = createImage(w, h, RGB);
   
-  // RGBDカメラ関係の初期化
-  kinect = new Kinect(this);
-  
-  bodies = new ArrayList<SkeletonData>();
+  // kinect関連の初期化
+  kinect = new KinectPV2(this);
+  kinect.enableColorImg(true);
+  kinect.enableSkeletonColorMap(true);
+  kinect.init();
   
   strokeWeight(5);
 }
 
 void draw(){
-  int i, partsNum;
-  float headx, heady, handRx, handRy, handLx, handLy;
+  // カラー画像のリサイズ
+  imageResize(kinect.getColorImage(), rsImg, rsScale);
   
-  // 背景にカラー画像の表示
-  image(kinect.GetImage(), 0, 0);
+  // カラー画像の表示
+  image(rsImg, 0, 0);
   
-  // 検出したユーザ毎に処理
-  for (i = 0; i < bodies.size (); i++){
-    // 頭の描画
-    partsNum = Kinect.NUI_SKELETON_POSITION_HEAD;
-    if(bodies.get(i).skeletonPositionTrackingState[partsNum] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED){
-      headx = bodies.get(i).skeletonPositions[partsNum].x * width;
-      heady = bodies.get(i).skeletonPositions[partsNum].y * height;
-      
-      fill(255, 215, 0);
-      ellipse(headx, heady, 50, 50);
-    }
+  // スケルトン情報の取得
+  skeletonArray =  kinect.getSkeletonColorMap();
+  
+  // 人数分(n人)ループする
+  for(int i = 0; i < skeletonArray.size(); i++){
+    // n人目のスケルトン情報を skeleton へ
+    KSkeleton skeleton = (KSkeleton) skeletonArray.get(i);
     
-    // 右手の描画
-    partsNum = Kinect.NUI_SKELETON_POSITION_HAND_RIGHT;
-    if(bodies.get(i).skeletonPositionTrackingState[partsNum] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED){
-      handRx = bodies.get(i).skeletonPositions[partsNum].x * width;
-      handRy = bodies.get(i).skeletonPositions[partsNum].y * height;
+    // skeleton が使えるならば
+    if(skeleton.isTracked()){
+      // 関節の集合となる配列に変換
+      KJoint[] joints = skeleton.getJoints();
+
+      // 頭部の座標を取得・描画
+      hd.x = joints[KinectPV2.JointType_Head].getX() * rsScale;
+      hd.y = joints[KinectPV2.JointType_Head].getY() * rsScale;
       
-      fill(128, 128, 0);
-      ellipse(handRx, handRy, 50, 50);
-    }
-    
-    // 左手の描画
-    partsNum = Kinect.NUI_SKELETON_POSITION_HAND_LEFT;
-    if(bodies.get(i).skeletonPositionTrackingState[partsNum] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED){
-      handLx = bodies.get(i).skeletonPositions[partsNum].x * width;
-      handLy = bodies.get(i).skeletonPositions[partsNum].y * height;
+      noFill();
+      stroke(0, 0, 255);
+      ellipse(hd.x, hd.y, 50, 50);
       
-      fill(247, 171, 166);
-      ellipse(handLx, handLy, 50, 50);
-    }
-  }
-}
-
-void appearEvent(SkeletonData _s){
-  if (_s.trackingState == Kinect.NUI_SKELETON_NOT_TRACKED){
-    return;
-  }
-  synchronized(bodies){
-    bodies.add(_s);
-  }
-}
-
-void disappearEvent(SkeletonData _s){
-  synchronized(bodies){
-    for(int i = bodies.size() - 1; i >= 0; i--){
-      if(_s.dwTrackingID == bodies.get(i).dwTrackingID){
-        bodies.remove(i);
+      // 両手の座標を取得
+      hr.x = joints[KinectPV2.JointType_HandRight].getX() * rsScale;
+      hr.y = joints[KinectPV2.JointType_HandRight].getY() * rsScale;
+      hl.x = joints[KinectPV2.JointType_HandLeft].getX() * rsScale;
+      hl.y = joints[KinectPV2.JointType_HandLeft].getY() * rsScale;
+      
+      // 右手の状態：パーで1、グーで2
+      if(joints[KinectPV2.JointType_HandRight].getState() == KinectPV2.HandState_Open){
+        f_hr = 1;
+      }else if(joints[KinectPV2.JointType_HandRight].getState() == KinectPV2.HandState_Closed){
+        f_hr = 2;
+      }else{
+        f_hr = 0;
       }
+      
+      // 左手の状態
+      if(joints[KinectPV2.JointType_HandLeft].getState() == KinectPV2.HandState_Open){
+        f_hl = 1;
+      }else if(joints[KinectPV2.JointType_HandLeft].getState() == KinectPV2.HandState_Closed){
+        f_hl = 2;
+      }else{
+        f_hl = 0;
+      }
+      
+      // 手の状態で線の色付けした位置に描画
+      if(f_hr == 1){
+        stroke(255, 0, 0);
+      }else if(f_hr == 2){
+        stroke(0, 255, 0);
+      }else{
+        stroke(0, 0, 0);
+      }
+      ellipse(hr.x, hr.y, 50, 50);
+      
+      if(f_hl == 1){
+        stroke(255, 0, 0);
+      }else if(f_hl == 2){
+        stroke(0, 255, 0);
+      }else{
+        stroke(0, 0, 0);
+      }
+      ellipse(hl.x, hl.y, 50, 50);
     }
   }
+  
+  fill(255, 0, 0);
+  text(frameRate, 20, 40);
 }
 
-void moveEvent(SkeletonData _b, SkeletonData _a){
-  if(_a.trackingState == Kinect.NUI_SKELETON_NOT_TRACKED){
-    return;
-  }
-  synchronized(bodies){
-    for(int i=bodies.size() - 1; i >= 0; i--){
-      if(_b.dwTrackingID == bodies.get(i).dwTrackingID){
-        bodies.get(i).copy(_a);
-        break;
-      }
+
+// 画像のリサイズ (簡易版の縮小用)
+void imageResize(PImage src, PImage dst, float s){
+  int i, j, u, v;
+  float rate = 1 / s;
+  dst.loadPixels();
+  for(j = 0; j < h; j++){
+    for(i = 0; i < w; i++){
+      u = (int)(i * rate + s);
+      v = (int)(j * rate + s) * src.width;
+      dst.pixels[i + j * w] = src.pixels[u + v];
     }
   }
+  dst.updatePixels();
 }

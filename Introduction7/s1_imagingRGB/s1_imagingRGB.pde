@@ -1,17 +1,52 @@
-// kinect用ライブラリ
-import kinect4WinSDK.*;
+// kinect V2用のライブラリ
+import KinectPV2.*;
 
 // RGBDカメラ用
-Kinect kinect;
+KinectPV2 kinect;
+
+// サイズ変更関連の変数
+PImage rsImg;
+float rsScale = 0.5; // 画面表示のスケール変数
+int w, h; // 変更する画像サイズ
 
 void setup(){
-  size(640, 480);
+  // スケールに合わせた画面サイズ
+  w = (int)(1920 * rsScale);
+  h = (int)(1080 * rsScale);
+  surface.setSize(w, h);
+  rsImg = createImage(w, h, RGB);
   
-  // RGBDカメラの起動
-  kinect = new Kinect(this);
+  // kinect関連の初期化
+  kinect = new KinectPV2(this);
+  kinect.enableColorImg(true);
+  kinect.init();
+
+  // 文字の設定
+  textSize(24);
+  fill(255, 0, 0);
 }
 
 void draw(){
+  // カラー画像のリサイズ
+  imageResize(kinect.getColorImage(), rsImg, rsScale);
+  
   // カラー画像の表示
-  image(kinect.GetImage(), 0, 0);
+  image(rsImg, 0, 0);
+  
+  text(frameRate, 20, 40);
+}
+
+// 画像のリサイズ (簡易版の縮小用)
+void imageResize(PImage src, PImage dst, float s){
+  int i, j, u, v;
+  float rate = 1 / s;
+  dst.loadPixels();
+  for(j = 0; j < h; j++){
+    for(i = 0; i < w; i++){
+      u = (int)(i * rate + s);
+      v = (int)(j * rate + s) * src.width;
+      dst.pixels[i + j * w] = src.pixels[u + v];
+    }
+  }
+  dst.updatePixels();
 }

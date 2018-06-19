@@ -1,17 +1,19 @@
-// kinect用ライブラリ
-import kinect4WinSDK.*;
+// kinect V2用のライブラリ
+import KinectPV2.*;
 
 // RGBDカメラ用
-Kinect kinect;
+KinectPV2 kinect;
 
 void setup(){
-  size(640, 480);
+  size(512, 424);
   
-  // RGBDカメラの起動
-  kinect = new Kinect(this);
+  // kinect関連の初期化
+  kinect = new KinectPV2(this);
+  kinect.enableDepthImg(true);
+  kinect.init();
 }
 
 void draw(){
   // カラー画像の表示
-  image(kinect.GetDepth(), 0, 0);
+  image(kinect.getDepthImage(), 0, 0);
 }

@@ -34,7 +34,8 @@ void setup(){
   noFill();
   stroke(0, 255, 0);
   strokeWeight(3);
-  faceImg = loadImage("../../image/HIUchar.png");
+  //faceImg = loadImage("HIUchar.png");
+  faceImg = loadImage("画像ファイル名");
 }
 
 void draw(){
