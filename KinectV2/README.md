@@ -1,3 +1,6 @@
+* [comp_depth_color](comp_depth_color)  
+RGB画像とD画像の比較をするプログラムです。
+
 * [hand0_pos](hand0_pos)  
 両手の位置に円を描画します。
 

@@ -10,9 +10,11 @@ PImage rsImg;
 float rsScale = 0.5; // 画面表示のスケール変数
 int w, h; // 変更後の画像サイズ
 
-// 個別の部品 (頭、右手、左手)
-PVector hd = new PVector(), hr = new PVector(), hl = new PVector();
-int f_hr = 0, f_hl = 0; // 両手の状態フラグ
+// ボタンの押下の状態
+boolean onBtn;
+
+// ボタンの座標(左上と右下)
+int btnLX = 30, btnLY = 100, btnRX = 300, btnRY = 200;
 
 void setup(){
   // スケールに合わせた画面サイズ
@@ -27,84 +29,77 @@ void setup(){
   kinect.enableSkeletonColorMap(true);
   kinect.init();
   
+  // テキスト用の初期化(日本語を使うためフォントも指定する)
+  textAlign(CENTER, CENTER);
+  textFont(createFont("MSゴシック", 40));
+  
   strokeWeight(5);
 }
 
 void draw(){
+  int i;
+  // 個別の部品 (右手、左手)
+  PVector hr = new PVector(), hl = new PVector();
   // カラー画像の高速リサイズ
   imageResize(kinect.getColorImage(), rsImg, rsScale);
   
   // カラー画像の表示
   image(rsImg, 0, 0);
   
+  
   // スケルトン情報の取得
   skeletonArray =  kinect.getSkeletonColorMap();
   
-  // 人数分(n人)ループする
-  for(int i = 0; i < skeletonArray.size(); i++){
+  // 一人のみでの動作を前提とする
+  if(skeletonArray.size() == 1){
     // n人目のスケルトン情報を skeleton へ
-    KSkeleton skeleton = (KSkeleton) skeletonArray.get(i);
+    KSkeleton skeleton = (KSkeleton) skeletonArray.get(0);
     
     // skeleton が使えるならば
     if(skeleton.isTracked()){
       // 関節の集合となる配列に変換
       KJoint[] joints = skeleton.getJoints();
 
-      // 頭部の座標を取得・描画
-      hd.x = joints[KinectPV2.JointType_Head].getX() * rsScale;
-      hd.y = joints[KinectPV2.JointType_Head].getY() * rsScale;
-      
-      noFill();
-      stroke(0, 0, 255);
-      ellipse(hd.x, hd.y, 50, 50);
-      
       // 両手の座標を取得
       hr.x = joints[KinectPV2.JointType_HandRight].getX() * rsScale;
       hr.y = joints[KinectPV2.JointType_HandRight].getY() * rsScale;
       hl.x = joints[KinectPV2.JointType_HandLeft].getX() * rsScale;
       hl.y = joints[KinectPV2.JointType_HandLeft].getY() * rsScale;
       
-      // 右手の状態：パーで1、グーで2
-      if(joints[KinectPV2.JointType_HandRight].getState() == KinectPV2.HandState_Open){
-        f_hr = 1;
-      }else if(joints[KinectPV2.JointType_HandRight].getState() == KinectPV2.HandState_Closed){
-        f_hr = 2;
-      }else{
-        f_hr = 0;
-      }
-      
-      // 左手の状態
-      if(joints[KinectPV2.JointType_HandLeft].getState() == KinectPV2.HandState_Open){
-        f_hl = 1;
-      }else if(joints[KinectPV2.JointType_HandLeft].getState() == KinectPV2.HandState_Closed){
-        f_hl = 2;
-      }else{
-        f_hl = 0;
-      }
-      
-      // 手の状態で線の色付けした位置に描画
-      if(f_hr == 1){
-        stroke(255, 0, 0);
-      }else if(f_hr == 2){
-        stroke(0, 255, 0);
-      }else{
-        stroke(0, 0, 0);
-      }
+      // 念のため手の座標を描画
+      noFill();
+      stroke(255, 0, 0);
       ellipse(hr.x, hr.y, 50, 50);
       
-      if(f_hl == 1){
-        stroke(255, 0, 0);
-      }else if(f_hl == 2){
-        stroke(0, 255, 0);
-      }else{
-        stroke(0, 0, 0);
-      }
+      stroke(0, 255, 0);
       ellipse(hl.x, hl.y, 50, 50);
+      
+      
+      // 手座標がボタンの範囲に入っているかを判定
+      if(hr.x > btnLX && hr.x < btnRX && hr.y > btnLY && hr.y < btnRY &&
+         hl.x > btnLX && hl.x < btnRX && hl.y > btnLY && hl.y < btnRY){
+        onBtn = true;
+      }else{
+        onBtn = false;
+      }
     }
   }
   
-  fill(255, 0, 0);
-  text(frameRate, 20, 40);
+  if(onBtn){
+    // ボタンが押されているときの処理
+    stroke(0);
+    fill(255, 220);
+    rect(btnLX, btnLY, btnRX - btnLX, btnRY - btnLY);
+    fill(0);
+    text("押されました", (btnRX + btnLX) / 2, (btnRY + btnLY) / 2);
+  }else{
+    // ボタンが押されていないときの処理
+    noFill();
+    stroke(255, 0, 0);
+    rect(btnLX, btnLY, btnRX - btnLX, btnRY - btnLY);
+    fill(255, 0, 0);
+    text("押してね", (btnRX + btnLX) / 2, (btnRY + btnLY) / 2);
+  }
 }
 
 // 画像の高速リサイズ (簡易版の縮小用)
