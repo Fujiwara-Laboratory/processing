@@ -4,15 +4,20 @@ import KinectPV2.*;
 
 KinectPV2 kinect;
 
-float skScale = 0.5; // 画面表示のスケール変数
+PImage rsImg;
+float scaleRatio = 2, rsScale; // 画面表示のスケール変数
+int w, h; // 変更後の画像サイズ
 
 void settings(){
   // スケールに応じたウィンドウサイズ
-  size((int)(1920 * skScale), (int)(1080 * skScale), P3D);
+  rsScale = 1.0 / scaleRatio;
+  w = (int)(1920 * rsScale);
+  h = (int)(1080 * rsScale);
+  size(w, h, P3D);
+  rsImg = createImage(w, h, RGB);
 }
 
 void setup() {
-
   // kinect関連の初期化
   kinect = new KinectPV2(this);
   kinect.enableSkeletonColorMap(true);
@@ -25,8 +30,9 @@ void setup() {
 }
 
 void draw() {
-  // 背景をカラー画像に
-  image(kinect.getColorImage(), 0, 0, width, height);
+  // カラー画像の高速リサイズ
+  imageResize(kinect.getColorImage(), rsImg, rsScale);
+  image(rsImg, 0, 0);
 
   // カラー画像用にスケルトンを生成する
   ArrayList<KSkeleton> skeletonArray =  kinect.getSkeletonColorMap();
@@ -162,4 +168,23 @@ void handState(int handState) {
     fill(255, 255, 255);
     break;
   }
+}
+
+// 画像の高速リサイズ (簡易版の縮小用)
+void imageResize(PImage src, PImage dst, float s){
+  int i, j, u, v;
+  if(s == 1){
+    dst = src.get();
+    return;
+  }
+  float rate = 1 / s;
+  dst.loadPixels();
+  for(j = 0; j < dst.height; j++){
+    for(i = 0; i < dst.width; i++){
+      u = (int)(i * rate + s);
+      v = (int)(j * rate + s) * src.width;
+      dst.pixels[i + j * dst.width] = src.pixels[u + v];
+    }
+  }
+  dst.updatePixels();
 }

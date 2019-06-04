@@ -107,20 +107,16 @@ void draw(){
   text(frameRate, 20, 40);
 }
 
-// 画像の高速リサイズ (簡易版の縮小用)
+// 画像のリサイズ (簡易版の縮小用)
 void imageResize(PImage src, PImage dst, float s){
   int i, j, u, v;
   float rate = 1 / s;
-  if(s == 1){
-    dst = src.get();
-    return;
-  }
   dst.loadPixels();
   for(j = 0; j < h; j++){
-    for(i = 0; i < w; i++){
+    for(i = 0; i < dst.width; i++){
       u = (int)(i * rate + s);
       v = (int)(j * rate + s) * src.width;
-      dst.pixels[i + j * w] = src.pixels[u + v];
+      dst.pixels[i + j * dst.width] = src.pixels[u + v];
     }
   }
   dst.updatePixels();

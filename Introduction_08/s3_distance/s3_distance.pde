@@ -6,7 +6,6 @@ KinectPV2 kinect;
 
 // 処理用の画像
 PImage img;
-float scale = 4500 / 256;
 int rawData[] = null;
 
 void setup(){

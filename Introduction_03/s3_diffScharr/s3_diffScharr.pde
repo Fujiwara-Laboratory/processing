@@ -10,7 +10,7 @@ void setup(){
   grayImg = new PImage(srcImg.width, srcImg.height);
   sblImg = new PImage(srcImg.width, srcImg.height);
   
-  // 画像の2値化(内部処理なので画像は作らない)と矩形の座標の決定
+  // 画像のグレースケール化(内部処理なので画像は作らない)と矩形の座標の決定
   for(int j = 0; j < srcImg.height; j++){
     for(int i = 0; i < srcImg.width; i++){
       c = srcImg.pixels[i + j * srcImg.width];
