@@ -11,7 +11,7 @@ int bufImages[][] = new int[sampleFrames][], buf[] = new int[w * h];
 int count = 0;
 
 void setup(){
-  // サイズを決めて初期化
+  // サイズを決めて初期化 
   cam = new Capture(this, w, h, 30);
   
   // 取り込み開始
