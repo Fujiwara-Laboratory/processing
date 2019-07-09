@@ -40,12 +40,17 @@ void draw(){
 void imageResize(PImage src, PImage dst, float s){
   int i, j, u, v;
   float rate = 1 / s;
+  int w_s = (int)(src.width * s), h_s = (int)(src.height * s);
+  if(s == 1){
+    dst = src.get();
+    return;
+  }
   dst.loadPixels();
-  for(j = 0; j < h; j++){
-    for(i = 0; i < w; i++){
+  for(j = 0; j < h_s; j++){
+    for(i = 0; i < w_s; i++){
       u = (int)(i * rate + s);
       v = (int)(j * rate + s) * src.width;
-      dst.pixels[i + j * w] = src.pixels[u + v];
+      dst.pixels[i + j * w_s] = src.pixels[u + v];
     }
   }
   dst.updatePixels();

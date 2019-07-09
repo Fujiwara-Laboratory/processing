@@ -13,6 +13,11 @@ int w, h; // 変更後の画像サイズ
 float mapDCT[]; // マッピング用のテーブル
 PImage d2cImg, clearImg; // 出力結果、バッファクリア用の画像
 
+// 最近傍画素の走査関連の変数
+int maskW = 50; // 処理から外す範囲(ベゼル的なもの)
+// 最も近い点の座標, 1フレーム前の点、XY平面上の距離の閾値、円の描画位置
+int cX, cY, pX, pY, distTh = 100, dX, dY;
+
 void setup(){
   int i, j;
   
@@ -20,7 +25,7 @@ void setup(){
   rsScale = 1.0 / scaleRatio;
   w = (int)(1920 * rsScale);
   h = (int)(1080 * rsScale);
-  surface.setSize(w, h * 2);
+  surface.setSize(w, h);
   rsImg = createImage(w, h, RGB);
   
   // kinect関連の初期化
@@ -40,17 +45,48 @@ void setup(){
   for(j = 0; j < h; j++) for(i = 0; i < w; i++) clearImg.pixels[i + j * w] = 0;
   clearImg.updatePixels();
   
+  pX = w / 2;
+  pY = h / 2;
 }
 
 void draw(){
+  int i, j, d, cV = 256;
   // 距離画像(512x424)からRGB画像座標系へ
   d2cImg = clearImg.get();
   depth2RGBsp(kinect.getDepthImage(), d2cImg, mapDCT);
-  image(d2cImg, 0, 0); // 距離画像の貼り付け
   
   // カラー画像の高速リサイズ
   imageResize(kinect.getColorImage(), rsImg, rsScale);
-  image(rsImg, 0, h);
+  image(rsImg, 0, 0);
+
+  // 端は処理をせずに最も距離の小さい(値が入っている)座標を探す
+  for(j = maskW; j < h - maskW; j++){
+    for(i = maskW; i < w - maskW; i++){
+      d = d2cImg.pixels[i + j * width] & 0xFF;
+      
+      // 距離画像が粗であるため0以上で最も小さい値とする
+      if(0 < d && d < cV){
+        cV = d;
+        cX = i;
+        cY = j;
+      }
+    }
+  } // 全体をなめた後にi, jへ最近点の座標が、cVへその距離が代入されている
+
+  // 本来は上記のサーチ範囲を以下の閾値を元に限定すべき(その方がよりコスト減)
+  if(abs(pX - cX) > distTh || abs(pY - cY) > distTh){
+    // 前フレームから離れすぎていたら前フレームの値を採用
+    cX = pX;
+    cY = pY;
+  }
+  
+  // 最もカメラに近い点の描画
+  stroke(255, 0, 0);
+  strokeWeight(3);
+  noFill();
+  ellipse(cX, cY, 32, 32);
+  pX = cX;
+  pY = cY;
 
   fill(255, 0, 0);
   text(frameRate , 50, 50);
@@ -87,20 +123,21 @@ void depth2RGBsp(PImage src, PImage dst, float tbl[]){
   dst.updatePixels();
 }
 
-// 画像の高速リサイズ (簡易版の縮小用)
+// 画像のリサイズ (簡易版の縮小用)
 void imageResize(PImage src, PImage dst, float s){
   int i, j, u, v;
+  float rate = 1 / s;
+  int w_s = (int)(src.width * s), h_s = (int)(src.height * s);
   if(s == 1){
     dst = src.get();
     return;
   }
-  float rate = 1 / s;
   dst.loadPixels();
-  for(j = 0; j < h; j++){
-    for(i = 0; i < w; i++){
+  for(j = 0; j < h_s; j++){
+    for(i = 0; i < w_s; i++){
       u = (int)(i * rate + s);
       v = (int)(j * rate + s) * src.width;
-      dst.pixels[i + j * w] = src.pixels[u + v];
+      dst.pixels[i + j * w_s] = src.pixels[u + v];
     }
   }
   dst.updatePixels();

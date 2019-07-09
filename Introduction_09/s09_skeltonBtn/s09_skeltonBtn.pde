@@ -11,10 +11,10 @@ float rsScale = 0.5; // 画面表示のスケール変数
 int w, h; // 変更後の画像サイズ
 
 // ボタンの押下の状態
-boolean onBtn;
+int onBtn;
 
 // ボタンの座標(左上と右下)
-int btnLX = 30, btnLY = 100, btnRX = 300, btnRY = 200;
+int btnLX = 80, btnLY = 100, btnRX = 440, btnRY = 200;
 
 void setup(){
   // スケールに合わせた画面サイズ
@@ -40,6 +40,7 @@ void draw(){
   int i;
   // 個別の部品 (右手、左手)
   PVector hr = new PVector(), hl = new PVector();
+  onBtn = 0;
   // カラー画像の高速リサイズ
   imageResize(kinect.getColorImage(), rsImg, rsScale);
   
@@ -74,48 +75,51 @@ void draw(){
       stroke(0, 255, 0);
       ellipse(hl.x, hl.y, 50, 50);
       
-      
       // 手座標がボタンの範囲に入っているかを判定
-      if(hr.x > btnLX && hr.x < btnRX && hr.y > btnLY && hr.y < btnRY &&
-         hl.x > btnLX && hl.x < btnRX && hl.y > btnLY && hl.y < btnRY){
-        onBtn = true;
-      }else{
-        onBtn = false;
-      }
+      if(hr.x > btnLX && hr.x < btnRX && hr.y > btnLY && hr.y < btnRY) onBtn++;
+      if(hl.x > btnLX && hl.x < btnRX && hl.y > btnLY && hl.y < btnRY) onBtn++;
     }
   }
   
-  if(onBtn){
+  if(onBtn == 2){
     // ボタンが押されているときの処理
     stroke(0);
     fill(255, 220);
     rect(btnLX, btnLY, btnRX - btnLX, btnRY - btnLY);
     fill(0);
     text("押されました", (btnRX + btnLX) / 2, (btnRY + btnLY) / 2);
+  }else if(onBtn == 1){
+    // ボタンが押されているときの処理
+    stroke(0);
+    fill(255, 100);
+    rect(btnLX, btnLY, btnRX - btnLX, btnRY - btnLY);
+    fill(0, 255, 255);
+    text("も一つも押してね", (btnRX + btnLX) / 2, (btnRY + btnLY) / 2);
   }else{
     // ボタンが押されていないときの処理
     noFill();
     stroke(255, 0, 0);
     rect(btnLX, btnLY, btnRX - btnLX, btnRY - btnLY);
     fill(255, 0, 0);
-    text("押してね", (btnRX + btnLX) / 2, (btnRY + btnLY) / 2);
+    text("両手で押してね", (btnRX + btnLX) / 2, (btnRY + btnLY) / 2);
   }
 }
 
-// 画像の高速リサイズ (簡易版の縮小用)
+// 画像のリサイズ (簡易版の縮小用)
 void imageResize(PImage src, PImage dst, float s){
   int i, j, u, v;
   float rate = 1 / s;
+  int w_s = (int)(src.width * s), h_s = (int)(src.height * s);
   if(s == 1){
     dst = src.get();
     return;
   }
   dst.loadPixels();
-  for(j = 0; j < h; j++){
-    for(i = 0; i < w; i++){
+  for(j = 0; j < h_s; j++){
+    for(i = 0; i < w_s; i++){
       u = (int)(i * rate + s);
       v = (int)(j * rate + s) * src.width;
-      dst.pixels[i + j * w] = src.pixels[u + v];
+      dst.pixels[i + j * w_s] = src.pixels[u + v];
     }
   }
   dst.updatePixels();
