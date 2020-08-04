@@ -1,6 +1,6 @@
 PImage srcImg, dstImg;
 PGraphics histImg = null;
-int histScale = 2; // ヒストグラムのグラフを表示する祭の倍率
+int histScale = 2; // ヒストグラムのグラフを表示する際の倍率
 
 void setup(){
   // 画像の読み込みと出力用メモリの準備
