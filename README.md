@@ -41,7 +41,7 @@ Kinectの簡単な応用例。
 * 第十二回：[Introduction_11](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction_12)  
 画面遷移の考え方。
 
-####Macを使う場合の注意点
+####M acを使う場合の注意点
 macOS Catalina 10.15 (以降も?) でUSB接続のカメラを使う場合公式のVideoライブラリーではおそらくエラーとなる。
 先人の某ブログ
 https://note.com/mement_mori1202/n/n4e888e7ef8b9
