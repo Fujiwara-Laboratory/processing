@@ -36,7 +36,7 @@ void genHistogram(PImage gray, PGraphics hist, int hScale){
   // ヒストグラムへ保存
   for(j = 0; j < gray.height; j++){
     for(i = 0; i < gray.width; i++){
-       // RGB全て同じ値が入っているという前提なので青取得と同じ演算で済ましている
+      // RGB全て同じ値が入っているという前提なので青取得と同じ演算で済ましている
       g = gray.pixels[i + j * gray.width] & 0xFF;
       histAry[g]++;
     }

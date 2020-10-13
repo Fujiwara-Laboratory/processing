@@ -23,6 +23,10 @@ void setup(){
   
   // 画像の配置を考慮したウィンドウサイズ
   surface.setSize(w * 2, h);
+  
+  // text用のフォント設定
+  fill(255, 0, 0);
+  textSize(20);
 }
 
 void draw(){
@@ -74,4 +78,5 @@ void draw(){
   }
   
   count++;
+  text(frameRate, 10, 30);
 }
