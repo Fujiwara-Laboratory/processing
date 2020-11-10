@@ -41,6 +41,7 @@ void draw(){
   // 処理結果を表示
   image(cvImg.getSnapshot(), 0, 0);
   
+  // Canny用の閾値を画面へ表示
   text(val_l + " " + val_h, 10, 20);
 }
 

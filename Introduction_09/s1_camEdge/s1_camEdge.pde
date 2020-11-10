@@ -10,9 +10,6 @@ int w = 640, h = 480;
 // OpenCV用の画像メモリ
 OpenCV cvImg;
 
-// Canny用の変数
-int val_l = 70, val_h = 120;
-
 void setup(){
   // ウィンドウサイズと取り込みサイズを決めて初期化
   surface.setSize(w, h);
@@ -23,9 +20,6 @@ void setup(){
   
   // OpenCV形式の画像メモリを取得
   cvImg = new OpenCV(this, cam);
-  
-  textSize(20);
-  fill(255);
 }
 
 void draw(){
@@ -36,23 +30,8 @@ void draw(){
   cvImg.loadImage(cam);
   
   // cannyエッジの抽出
-  cvImg.findCannyEdges(val_l, val_h);
+  cvImg.findCannyEdges(50, 120);
   
   // 処理結果を表示
   image(cvImg.getSnapshot(), 0, 0);
-  
-  text(val_l + " " + val_h, 10, 20);
-}
-
-void keyPressed(){
-  if(keyCode == UP){
-    if(val_l < val_h) val_l++;
-  }else if(keyCode == DOWN){
-    if(0 < val_l) val_l--;
-  }
-  if(keyCode == RIGHT){
-    val_h++;
-  }else if(keyCode == LEFT){
-    if(val_l < val_h) val_h--;
-  }
 }
