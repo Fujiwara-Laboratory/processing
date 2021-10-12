@@ -9,7 +9,9 @@ PGraphics histImg;
 int histScale = 2; // ヒストグラムのグラフを表示する際の倍率
 
 void setup(){
-  cam = new Capture(this, w, h, 30);
+  String[] cameras = Capture.list();
+  cam = new Capture(this, cameras[0]);
+  //cam = new Capture(this, w, h, 30);
   
   // 取り込み開始
   cam.start();
