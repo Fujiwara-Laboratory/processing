@@ -26,13 +26,13 @@ Processing
 * 第七回：[Introduction_07](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction_07)  
 カメラ入力の応用例 1。
 
-* 第七回(の発展的内容)：[Introduction_07-2](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction_07-2)  
+* 第七回(の発展的内容)：[Introduction_07_2](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction_07_2)  
 カメラ入力の応用例 2。
 
 * 第八回：[Introduction_08](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction_08)  
 カメラ＋OpenCV 1。
 
-* 第回(の発展的内容)：[Introduction_08-2](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction_08-2)  
+* 第回(の発展的内容)：[Introduction_08_2](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction_08_2)  
 カメラ＋OpenCV 2。
 
 * 第九回：[Introduction_09](https://github.com/Fujiwara-Laboratory/processing/tree/master/Introduction_09)  
