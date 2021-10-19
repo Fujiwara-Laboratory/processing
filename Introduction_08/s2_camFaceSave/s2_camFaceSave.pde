@@ -15,10 +15,13 @@ OpenCV cvImg;
 // 顔検出結果の座標
 Rectangle[] faces;
 
+int faceCount = 0;
+
 void setup(){
   // ウィンドウサイズと取り込みサイズを決めて初期化
   surface.setSize(w, h);
-  cam = new Capture(this, w, h, 30); // VGAだと処理落ちがひどい
+  String[] cameras = Capture.list();
+  cam = new Capture(this, cameras[0]); // VGAだと処理落ちがひどいかも
   
   // 取り込み開始
   cam.start();
@@ -44,11 +47,21 @@ void draw(){
   // 取り込んだ画像をOpenCV形式へ
   cvImg.loadImage(cam);
   
-  // 顔検出 
+  // 顔検出
   faces = cvImg.detect();
   
   // 検出した顔位置へ矩形を表示する
   for(int i = 0; i < faces.length; i++){
     rect(faces[i].x, faces[i].y, faces[i].width, faces[i].height);
+  }
+}
+
+void keyPressed(){
+  for(int i = 0; i < faces.length; i++){
+    // 顔のサイズで画像を生成
+    PImage faceImg = cam.get(faces[i].x, faces[i].y, faces[i].width, faces[i].height);
+    // 連番のファイル名で保存
+    faceImg.save(nf(faceCount, 5) + ".jpg");
+    faceCount++;
   }
 }

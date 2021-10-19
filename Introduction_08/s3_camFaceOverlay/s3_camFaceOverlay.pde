@@ -10,25 +10,23 @@ Capture cam;
 int w = 640, h = 480;
 
 // ProcessingおよびOpenCV用の画像メモリ
-PImage dstImg;
 OpenCV cvImg;
+PImage faceImg;
 
 // 顔検出結果の座標
 Rectangle[] faces;
 
-// 処理用画像を作るときのスケール
-int scale = 2;
-
 void setup(){
   // ウィンドウサイズと取り込みサイズを決めて初期化
   surface.setSize(w, h);
-  cam = new Capture(this, w, h, 30); // VGAだと処理落ちがひどい
+  String[] cameras = Capture.list();
+  cam = new Capture(this, cameras[0]); // VGAだと処理落ちがひどいかも
   
   // 取り込み開始
   cam.start();
   
   // OpenCV形式の画像メモリを取得
-  cvImg = new OpenCV(this, w / scale, h / scale);
+  cvImg = new OpenCV(this, cam);
   
   //顔検出器の読み込み
   cvImg.loadCascade(OpenCV.CASCADE_FRONTALFACE); 
@@ -37,27 +35,23 @@ void setup(){
   noFill();
   stroke(0, 255, 0);
   strokeWeight(3);
+  faceImg = loadImage("画像ファイル名");
 }
 
 void draw(){
   // カメラが取り込める状態(動いている場合)はメモリに
   if(cam.available()) cam.read();
-  
   // キャプチャした画像を表示する
   image(cam, 0, 0);
   
-  // リサイズ用の画像へコピーしてから処理
-  dstImg = cam.get();
-  dstImg.resize(w / scale, h / scale);
+  // 取り込んだ画像をOpenCV形式へ
+  cvImg.loadImage(cam);
   
-  // 小さくした画像をOpenCV形式へ
-  cvImg.loadImage(dstImg);
-  
-  // 顔検出 
+  // 顔検出
   faces = cvImg.detect();
   
   // 検出した顔位置へ矩形を表示する
   for(int i = 0; i < faces.length; i++){
-    rect(faces[i].x * scale, faces[i].y * scale, faces[i].width * scale, faces[i].height * scale);
+    image(faceImg, faces[i].x, faces[i].y, faces[i].width, faces[i].height);
   }
 }
